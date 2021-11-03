@@ -1,6 +1,8 @@
 package com.techelevator.view;
 
 
+import com.techelevator.tenmo.model.Account;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -72,5 +74,11 @@ public class ConsoleService {
 			}
 		} while(result == null);
 		return result;
+	}
+
+	public void printAccountBalance(Account account) {
+
+		System.out.println("Your account balance is: " + account.getBalance());
+
 	}
 }

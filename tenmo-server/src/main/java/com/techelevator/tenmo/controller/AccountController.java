@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.security.Principal;
+
 @RestController
 @PreAuthorize("isAuthenticated()")
 
@@ -23,8 +26,10 @@ public class AccountController {
 
     @PreAuthorize("permitAll")
     @RequestMapping(path = "balance/{id}", method = RequestMethod.GET)
-    public long getAccountBalance(@PathVariable long id) {
+    public BigDecimal getAccountBalance(@PathVariable long id, Principal principal) {
+        System.out.println(principal.getName());
         return accountDao.getAccountBalance(id);
+
     }
 
 }

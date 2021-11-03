@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
@@ -21,7 +22,7 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public long getAccountBalance(long account_id){
+    public BigDecimal getAccountBalance(long account_id){
 
         Account account = null;
         long balance = 0;
@@ -34,8 +35,7 @@ public class JdbcAccountDao implements AccountDao {
         if (results.next()) {
             account = mapRowToAccount(results);
         }
-        return account.getBalance()
-                ;
+        return account.getBalance();
     }
 
     private Account mapRowToAccount(SqlRowSet rowSet) {
@@ -43,7 +43,7 @@ public class JdbcAccountDao implements AccountDao {
 
         account.setAccount_id(rowSet.getLong("account_id"));
         account.setUser_id(rowSet.getLong("user_id"));
-        account.setBalance((long) (rowSet.getDouble("balance") * 100));
+        account.setBalance((BigDecimal.valueOf(rowSet.getDouble("balance"))));
 
         return account;
     }
