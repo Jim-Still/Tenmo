@@ -26,9 +26,10 @@ public class AccountController {
 
     @PreAuthorize("permitAll")
     @RequestMapping(path = "balance/{id}", method = RequestMethod.GET)
-    public BigDecimal getAccountBalance(@PathVariable long id, Principal principal) {
-        System.out.println(principal.getName());
-        return accountDao.getAccountBalance(id);
+    public BigDecimal getAccountBalance(@PathVariable long id) {
+
+        BigDecimal balance = accountDao.getAccountBalance(id);
+        return balance;
 
     }
 

@@ -1,53 +1,42 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 public class AccountService {
 
-    private static final String API_BASE_URL = "http://localhost:8080/";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private String API_BASE_URL;
+    private RestTemplate restTemplate = new RestTemplate();
+    private AuthenticatedUser currentUser;
 
-    private String authToken = null;
+    public AccountService(String API_BASE_URL, AuthenticatedUser currentUser) {
+        this.API_BASE_URL = API_BASE_URL;
+        this.currentUser = currentUser;
+    }
 
-    public void setAuthToken(String authToken) { this.authToken = authToken; }
-
-    public Account getAccount(long accountId) {
-        Account account = null;
+    public BigDecimal getAccountBalance() {
+        BigDecimal accountBalance = new BigDecimal(0);
         try {
-            ResponseEntity<Account> response =
-                    restTemplate.exchange(API_BASE_URL + "balance/" + accountId,
-                            HttpMethod.GET, makeAuthEntity(), Account.class);
-            account = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            System.out.println("BasicLogger.log(e.getMessage())");
+            accountBalance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
+            System.out.println("Your current account balance is: $" + accountBalance);
+        } catch (RestClientException e) {
+            System.out.println("Error getting balance");
         }
-        return account;
+        return accountBalance;
     }
 
 
 
-
-
-    /**
-     * Creates a new HttpEntity with the `Authorization: Bearer:` header and a reservation request body
-     */
-//    private HttpEntity<Reservation> makeReservationEntity(Reservation reservation) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(authToken);
-//        return new HttpEntity<>(reservation, headers);
-//    }
-
-    /**
-     * Returns an HttpEntity with the `Authorization: Bearer:` header
-     */
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authToken);
+        headers.setBearerAuth(currentUser.getToken());
         return new HttpEntity<>(headers);
     }
 

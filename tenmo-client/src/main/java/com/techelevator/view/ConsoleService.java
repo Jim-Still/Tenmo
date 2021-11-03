@@ -76,9 +76,4 @@ public class ConsoleService {
 		return result;
 	}
 
-	public void printAccountBalance(Account account) {
-
-		System.out.println("Your account balance is: " + account.getBalance());
-
-	}
 }

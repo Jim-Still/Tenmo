@@ -74,10 +74,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
     	//long choice = console.getUserInputInteger("What is your account number?");
 
-    	Account account = accountService.getAccount(2001); //user's accountId
+    	AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
-		console.printAccountBalance(account);
-		
+		try {
+			accountService.getAccountBalance();
+		} catch (NullPointerException e) {
+			System.out.println("Account empty.");
+		}
 	}
 
 	private void viewTransferHistory() {

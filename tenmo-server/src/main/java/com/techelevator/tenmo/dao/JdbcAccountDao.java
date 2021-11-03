@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Component
 public class JdbcAccountDao implements AccountDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
 //    public JdbcAccountDao(DataSource dataSource) {
 //        this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -22,16 +22,15 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public BigDecimal getAccountBalance(long account_id){
+    public BigDecimal getAccountBalance(long user_id){
 
         Account account = null;
-        long balance = 0;
 
         String sql = "SELECT account_id, user_id, balance " +
                      "FROM accounts " +
-                     "WHERE account_id = ?;";
+                     "WHERE user_id = ?;";
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, account_id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
         if (results.next()) {
             account = mapRowToAccount(results);
         }
@@ -43,7 +42,7 @@ public class JdbcAccountDao implements AccountDao {
 
         account.setAccount_id(rowSet.getLong("account_id"));
         account.setUser_id(rowSet.getLong("user_id"));
-        account.setBalance((BigDecimal.valueOf(rowSet.getDouble("balance"))));
+        account.setBalance(rowSet.getBigDecimal("balance"));
 
         return account;
     }
