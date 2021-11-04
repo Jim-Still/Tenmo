@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -34,11 +35,22 @@ public class TransferController {
     //Get Single Transfer
 
     @PreAuthorize("permitAll")
-    @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)//make a transfer not found exception
-    public Transfer getSingleTransfer(@PathVariable long id){
+    @RequestMapping(path = "transfers/{transferID}", method = RequestMethod.GET)//make a transfer not found exception
+    public Transfer getSingleTransfer(@PathVariable long transferID){
 
-        Transfer singleTransfer = transferDao.getSingleTransfer(id);
+        Transfer singleTransfer = transferDao.getSingleTransfer(transferID);
         return singleTransfer;
+    }
+
+    //Get All Transfers By User ID
+
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "transfers/{userID}/all", method = RequestMethod.GET)
+    public List<Transfer> getAllTransfers(@PathVariable long userID) {
+
+        List<Transfer> listAllTransfers = transferDao.getAllTransfers(userID);
+
+        return listAllTransfers;
     }
 
 }

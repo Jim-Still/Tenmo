@@ -6,9 +6,11 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
+import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.view.ConsoleService;
 
 import javax.lang.model.type.IntersectionType;
+import java.text.NumberFormat;
 
 public class App {
 
@@ -87,6 +89,22 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewTransferHistory() {
 		//shows user's past transfers pulls from the database
+
+		TransferService transferService = new TransferService(API_BASE_URL, currentUser);
+
+		try {
+			transferService.getAllTransfers();
+		} catch (NullPointerException e) {
+			System.out.println("No transfers found");
+		}
+
+		Integer enteredTransferID = console.getUserInputInteger("Please enter transfer ID to view details (0 to cancel): ");
+
+		try {
+			transferService.getSingleTransfer(enteredTransferID);
+		} catch (NumberFormatException e) {
+			System.out.println("Transfer ID Not Recognized");
+		}
 		
 	}
 
