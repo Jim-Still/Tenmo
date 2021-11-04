@@ -10,15 +10,15 @@ public class Transfer {
     private long account_from;
     private long account_to;
     private BigDecimal amount;
-    private String transferType;
-    private String transferStatus;
     private long user_id_From;
     private long user_id_To;
+    private String transfer_type;
+    private String transfer_status;
 
 
     public Transfer() {}
 
-    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To) {
+    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To, String transfer_type, String transfer_status) {
         this.transfer_id = transfer_id;
         this.transfer_type_id = transfer_type_id;
         this.transfer_status_id = transfer_status_id;
@@ -27,6 +27,8 @@ public class Transfer {
         this.amount = amount;
         this.user_id_From = user_id_From;
         this.user_id_To = user_id_To;
+        this.transfer_type = transfer_type;
+        this.transfer_status = transfer_status;
     }
 
     public long getTransfer_id() {
@@ -77,22 +79,6 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public String getTransferType() {
-        return transferType;
-    }
-
-    public void setTransferType(String transferType) {
-        this.transferType = transferType;
-    }
-
-    public String getTransferStatus() {
-        return transferStatus;
-    }
-
-    public void setTransferStatus(String transferStatus) {
-        this.transferStatus = transferStatus;
-    }
-
     public long getUser_id_From() {
         return user_id_From;
     }
@@ -109,6 +95,22 @@ public class Transfer {
         this.user_id_To = user_id_To;
     }
 
+    public String getTransfer_type() {
+        return transfer_type;
+    }
+
+    public void setTransfer_type(String transfer_type) {
+        this.transfer_type = transfer_type;
+    }
+
+    public String getTransfer_status() {
+        return transfer_status;
+    }
+
+    public void setTransfer_status(String transfer_status) {
+        this.transfer_status = transfer_status;
+    }
+
     @Override
     public String toString() {
         return "Transfer{" +
@@ -120,6 +122,8 @@ public class Transfer {
                 ", amount=" + amount +
                 ", user_id_From=" + user_id_From +
                 ", user_id_To=" + user_id_To +
+                ", transfer_type='" + transfer_type + '\'' +
+                ", transfer_status='" + transfer_status + '\'' +
                 '}';
     }
 }

@@ -10,10 +10,8 @@ public class Transfer {
     private long account_from;
     private long account_to;
     private BigDecimal amount;
-    private String transferType;
-    private String transferStatus;
-    private String userFrom;
-    private String userTo;
+    private long user_id_From;
+    private long user_id_To;
 
     public long getTransfer_id() {
         return transfer_id;
@@ -63,35 +61,19 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public String getTransferType() {
-        return transferType;
+    public long getUser_id_From() {
+        return user_id_From;
     }
 
-    public void setTransferType(String transferType) {
-        this.transferType = transferType;
+    public void setUser_id_From(long user_id_From) {
+        this.user_id_From = user_id_From;
     }
 
-    public String getTransferStatus() {
-        return transferStatus;
+    public long getUser_id_To() {
+        return user_id_To;
     }
 
-    public void setTransferStatus(String transferStatus) {
-        this.transferStatus = transferStatus;
-    }
-
-    public String getUserFrom() {
-        return userFrom;
-    }
-
-    public void setUserFrom(String userFrom) {
-        this.userFrom = userFrom;
-    }
-
-    public String getUserTo() {
-        return userTo;
-    }
-
-    public void setUserTo(String userTo) {
-        this.userTo = userTo;
+    public void setUser_id_To(long user_id_To) {
+        this.user_id_To = user_id_To;
     }
 }

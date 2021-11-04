@@ -19,17 +19,42 @@ public class JdbcTransferDao implements TransferDao {
     }
 
 
-//    public Transfer getTransfer(long transfer_id){
-//        Transfer transfer = null;
-//        String sql = "SELECT park_id, park_name, date_established, area, has_camping " +
-//                "FROM park " +
-//                "WHERE park_id = ?";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, parkId);
-//        if (results.next()) {
-//            park = mapRowToPark(results);
-//        }
-//        return park;
-//    }
+    @Override
+    public Transfer getSingleTransfer(long transfer_id){
+        Transfer transfer = null;
+        String sql = "SELECT *, " +
+
+        "(SELECT accounts.user_id " +
+        "FROM transfers " +
+        "JOIN accounts on transfers.account_from = accounts.account_id " +
+        "WHERE transfers.transfer_id = ?) AS from_user_id, " +
+
+        "(SELECT accounts.user_id " +
+        "FROM transfers " +
+        "JOIN accounts on transfers.account_to = accounts.account_id " +
+        "WHERE transfers.transfer_id = ?) AS to_user_id, " +
+
+        "(SELECT transfer_types.transfer_type_desc " +
+        "FROM transfers " +
+        "JOIN transfer_types ON transfer_types.transfer_type_id = transfers.transfer_type_id " +
+        "WHERE transfers.transfer_id = ?) AS transfer_type, " +
+
+        "(SELECT transfer_statuses.transfer_status_desc " +
+        "FROM transfers " +
+        "JOIN transfer_statuses ON transfer_statuses.transfer_status_id = transfers.transfer_status_id " +
+        "WHERE transfers.transfer_id = ?) AS transfer_status " +
+
+        "FROM transfers " +
+
+        "WHERE transfer_id = ?";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transfer_id, transfer_id, transfer_id, transfer_id, transfer_id);
+        if (results.next()) {
+            transfer = mapRowToTransfer(results);
+        }
+        return transfer;
+    }
+
 
     @Override
     public Transfer createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
@@ -44,8 +69,13 @@ public class JdbcTransferDao implements TransferDao {
                 "        WHERE user_id = ?),\n" +
                 "        ?) RETURNING transfer_id";
 
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, from_user_id, to_user_id, amount);
+        if (results.next()) {
+            transfer = mapRowToTransfer(results);
+        }
         return transfer;
     }
+
 
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {
@@ -57,8 +87,10 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setAccount_from(rowSet.getLong("account_from"));
         transfer.setAccount_to(rowSet.getLong("account_to"));
         transfer.setAmount(rowSet.getBigDecimal("amount"));
-        transfer.setUser_id_From(rowSet.getLong("user_id_From"));
-        transfer.setUser_id_To(rowSet.getLong("user_id_To"));
+        transfer.setUser_id_From(rowSet.getLong("from_user_id"));
+        transfer.setUser_id_To(rowSet.getLong("to_user_id"));
+        transfer.setTransfer_type(rowSet.getString("transfer_type"));
+        transfer.setTransfer_status(rowSet.getString("transfer_status"));
 
 
         return transfer;

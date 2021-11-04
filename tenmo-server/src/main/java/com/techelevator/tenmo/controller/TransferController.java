@@ -23,12 +23,22 @@ public class TransferController {
     // Create new transfer
 
     @PreAuthorize("permitAll")
-    @RequestMapping(path = "transfer", method = RequestMethod.POST)//make a user not found exception
+    @RequestMapping(path = "transfers", method = RequestMethod.POST)//make a user not found exception
     public Transfer createTransfer(@RequestBody Transfer transfer) {
 
         return transferDao.createTransfer(transfer.getUser_id_From(),transfer.getUser_id_To(),transfer.getAmount());
 
 
+    }
+
+    //Get Single Transfer
+
+    @PreAuthorize("permitAll")
+    @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)//make a transfer not found exception
+    public Transfer getSingleTransfer(@PathVariable long id){
+
+        Transfer singleTransfer = transferDao.getSingleTransfer(id);
+        return singleTransfer;
     }
 
 }
