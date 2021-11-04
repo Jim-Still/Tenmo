@@ -14,11 +14,13 @@ public class Transfer {
     private long user_id_To;
     private String transfer_type;
     private String transfer_status;
+    private String username_from;
+    private String username_to;
 
 
     public Transfer() {}
 
-    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To, String transfer_type, String transfer_status) {
+    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To, String transfer_type, String transfer_status, String username_from, String username_to) {
         this.transfer_id = transfer_id;
         this.transfer_type_id = transfer_type_id;
         this.transfer_status_id = transfer_status_id;
@@ -29,6 +31,8 @@ public class Transfer {
         this.user_id_To = user_id_To;
         this.transfer_type = transfer_type;
         this.transfer_status = transfer_status;
+        this.username_from = username_from;
+        this.username_to = username_to;
     }
 
     public long getTransfer_id() {
@@ -111,6 +115,22 @@ public class Transfer {
         this.transfer_status = transfer_status;
     }
 
+    public String getUsername_from() {
+        return username_from;
+    }
+
+    public void setUsername_from(String username_from) {
+        this.username_from = username_from;
+    }
+
+    public String getUsername_to() {
+        return username_to;
+    }
+
+    public void setUsername_to(String username_to) {
+        this.username_to = username_to;
+    }
+
     @Override
     public String toString() {
         return "Transfer{" +
@@ -124,6 +144,8 @@ public class Transfer {
                 ", user_id_To=" + user_id_To +
                 ", transfer_type='" + transfer_type + '\'' +
                 ", transfer_status='" + transfer_status + '\'' +
+                ", username_from='" + username_from + '\'' +
+                ", username_to='" + username_to + '\'' +
                 '}';
     }
 }
