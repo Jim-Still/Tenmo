@@ -15,18 +15,6 @@ public class Transfer {
     private String userFrom;
     private String userTo;
 
-
-    public Transfer() {}
-
-    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount) {
-        this.transfer_id = transfer_id;
-        this.transfer_type_id = transfer_type_id;
-        this.transfer_status_id = transfer_status_id;
-        this.account_from = account_from;
-        this.account_to = account_to;
-        this.amount = amount;
-    }
-
     public long getTransfer_id() {
         return transfer_id;
     }
@@ -105,17 +93,5 @@ public class Transfer {
 
     public void setUserTo(String userTo) {
         this.userTo = userTo;
-    }
-
-    @Override
-    public String toString() {
-        return "Transfer{" +
-                "transfer_id=" + transfer_id +
-                ", transfer_type_id=" + transfer_type_id +
-                ", transfer_status_id=" + transfer_status_id +
-                ", account_from=" + account_from +
-                ", account_to=" + account_to +
-                ", amount=" + amount +
-                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AccountService {
 
@@ -30,6 +32,21 @@ public class AccountService {
             System.out.println("Error getting balance");
         }
         return accountBalance;
+    }
+
+    public User[] findAllUsers(){
+        User[] users = null;
+
+        try {
+            users = restTemplate.exchange(API_BASE_URL + "transfer/users", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+            for (User i : users) {
+                System.out.println(i);
+            }
+        } catch (RestClientResponseException e) {
+            System.out.println("Error getting users");
+        }
+        return users;
+
     }
 
 

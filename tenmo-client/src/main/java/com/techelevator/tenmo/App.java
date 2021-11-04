@@ -94,7 +94,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		AccountService accountService = new AccountService(API_BASE_URL, currentUser);
+
+		try {
+			accountService.findAllUsers();
+		} catch (NullPointerException e) {
+			System.out.println("Account empty.");
+		}
 		
 	}
 
