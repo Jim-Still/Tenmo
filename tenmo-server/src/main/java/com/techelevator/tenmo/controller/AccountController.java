@@ -23,7 +23,6 @@ public class AccountController {
 
     private AccountDao accountDao;
 
-
     public AccountController(AccountDao accountDao) {
         this.accountDao = accountDao;
 

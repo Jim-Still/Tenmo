@@ -12,19 +12,21 @@ public class Transfer {
     private BigDecimal amount;
     private String transferType;
     private String transferStatus;
-    private String userFrom;
-    private String userTo;
+    private long user_id_From;
+    private long user_id_To;
 
 
     public Transfer() {}
 
-    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount) {
+    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To) {
         this.transfer_id = transfer_id;
         this.transfer_type_id = transfer_type_id;
         this.transfer_status_id = transfer_status_id;
         this.account_from = account_from;
         this.account_to = account_to;
         this.amount = amount;
+        this.user_id_From = user_id_From;
+        this.user_id_To = user_id_To;
     }
 
     public long getTransfer_id() {
@@ -91,20 +93,20 @@ public class Transfer {
         this.transferStatus = transferStatus;
     }
 
-    public String getUserFrom() {
-        return userFrom;
+    public long getUser_id_From() {
+        return user_id_From;
     }
 
-    public void setUserFrom(String userFrom) {
-        this.userFrom = userFrom;
+    public void setUser_id_From(long user_id_From) {
+        this.user_id_From = user_id_From;
     }
 
-    public String getUserTo() {
-        return userTo;
+    public long getUser_id_To() {
+        return user_id_To;
     }
 
-    public void setUserTo(String userTo) {
-        this.userTo = userTo;
+    public void setUser_id_To(long user_id_To) {
+        this.user_id_To = user_id_To;
     }
 
     @Override
@@ -116,6 +118,8 @@ public class Transfer {
                 ", account_from=" + account_from +
                 ", account_to=" + account_to +
                 ", amount=" + amount +
+                ", user_id_From=" + user_id_From +
+                ", user_id_To=" + user_id_To +
                 '}';
     }
 }
