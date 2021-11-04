@@ -84,16 +84,21 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+		//shows user's past transfers pulls from the database
 		
 	}
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
+		//show's requests that have status pending and are to the user
 		
 	}
 
 	private void sendBucks() {
+    	//show a list of users
+		//-> user selects user to transfer to from list of users
+		//-> user enters amount to be sent in transfer
+
+
 		AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
 		try {
@@ -105,6 +110,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void requestBucks() {
+		//show a list of users
+		//-> user selects user to request from from list of users
+		//-> user enters amount requested
+
 		// TODO Auto-generated method stub
 		
 	}
