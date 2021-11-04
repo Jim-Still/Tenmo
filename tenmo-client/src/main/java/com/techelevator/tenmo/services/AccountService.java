@@ -35,12 +35,13 @@ public class AccountService {
     }
 
     public User[] findAllUsers(){
+        // Method adds extra user in App
         User[] users = null;
 
         try {
             users = restTemplate.exchange(API_BASE_URL + "transfer/users", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
             for (User i : users) {
-                System.out.println(i);
+                System.out.println(i.toString());
             }
         } catch (RestClientResponseException e) {
             System.out.println("Error getting users");

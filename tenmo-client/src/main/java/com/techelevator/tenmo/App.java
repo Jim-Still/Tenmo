@@ -8,6 +8,8 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
 import com.techelevator.view.ConsoleService;
 
+import javax.lang.model.type.IntersectionType;
+
 public class App {
 
 private static final String API_BASE_URL = "http://localhost:8080/";
@@ -102,10 +104,21 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
 		try {
-			accountService.findAllUsers();
+			System.out.println(accountService.findAllUsers());
 		} catch (NullPointerException e) {
 			System.out.println("Account empty.");
 		}
+
+		//Prompt for user ID to send TEbucks to
+
+		Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
+
+		Integer enteredAmount = console.getUserInputInteger("Enter amount: ");
+
+
+
+
+
 		
 	}
 
