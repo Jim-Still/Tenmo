@@ -48,15 +48,7 @@ public Account getAccount(@PathVariable long userid) {
         return balance;
 
     }
-// Add to balance (does not work)
 
-//
-//    @PreAuthorize("permitAll")
-//    @RequestMapping(path ="balance/{id}", method = RequestMethod.PUT)
-//    public void addToAccountBalance(@RequestBody Account account, @PathVariable long id){
-//
-//        accountDao.addToAccountBalance(account);
-//    }
 
 
 

@@ -53,22 +53,6 @@ public class AccountService {
         return accountBalance;
     }
 
-
-    //add to account balance (does not work)
-
-//    public boolean addToAccountBalance(Account account, BigDecimal amount){
-//        boolean success = false;
-//
-//        try {
-//            account.setBalance(account.getBalance().add(amount));
-//            restTemplate.put(API_BASE_URL + "balance/" + account.getUser_id(), makeAccountEntity(account));
-//            success = true;
-//        } catch (RestClientResponseException | ResourceAccessException e) {
-//        }
-//        return success;
-//
-//    }
-
     public User[] findAllUsers(){
         // Method adds extra user in App
         User[] users = null;

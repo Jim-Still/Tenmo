@@ -3,6 +3,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -103,12 +104,88 @@ public class JdbcTransferDao implements TransferDao {
     public void createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
 
         String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount)\n" +
-                "VALUES (2, 2, (SELECT account_id from accounts WHERE user_id = ?) , (SELECT account_id from accounts WHERE user_id = ?), ?)";
+                "VALUES (2, 2, (SELECT account_id from accounts WHERE user_id = ?) , (SELECT account_id from accounts WHERE user_id = ?), ?) RETURNING transfer_id ";
 
-        jdbcTemplate.update(sql, from_user_id, to_user_id, amount);
+        long newTransferId = -1;
+
+        try {
+           newTransferId = jdbcTemplate.queryForObject(sql, Long.class, from_user_id, to_user_id, amount);
+
+            System.out.println(newTransferId);
+        }catch (DataAccessException e) {
+            System.out.println("Transfer creation failed");
+        }
+
+        runTransaction(getSingleTransfer(newTransferId));
 
     }
 
+    @Override
+    public void runTransaction(Transfer transfer){
+        long userFrom = transfer.getUser_id_From();
+        long userTo = transfer.getUser_id_To();
+        BigDecimal amount = transfer.getAmount();
+        String transferStatus = transfer.getTransfer_status();
+        String transferType = transfer.getTransfer_type();
+
+        BigDecimal balance = getAccountBalance(transfer.getUser_id_From());
+
+        if(balance.compareTo(amount) >=0){
+            addToBalance(userTo, amount);
+            subtractFromBalance(userFrom, amount);
+        } else{
+            System.out.println("Transfer failed: not enough funds.");
+        }
+
+    }
+
+    @Override
+    public BigDecimal getAccountBalance(long user_id){
+
+        Account account = null;
+
+        String sql = "SELECT account_id, user_id, balance " +
+                "FROM accounts " +
+                "WHERE user_id = ?;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
+        if (results.next()) {
+            account = mapRowToAccount(results);
+        }
+        return account.getBalance();
+
+    }
+
+    @Override
+    public void addToBalance(long user_id,BigDecimal amount){
+
+        String sql = "UPDATE accounts " +
+                "SET balance = balance + ? " +
+                "WHERE user_id = ?;";
+        jdbcTemplate.update(sql, amount, user_id);
+
+    }
+
+    @Override
+    public void subtractFromBalance(long user_id,BigDecimal amount){
+
+        String sql = "UPDATE accounts " +
+                "SET balance = balance - ? " +
+                "WHERE user_id = ?;";
+        jdbcTemplate.update(sql, amount, user_id);
+
+    }
+
+
+    private Account mapRowToAccount(SqlRowSet rowSet) {
+        Account account = new Account();
+
+        account.setAccount_id(rowSet.getLong("account_id"));
+        account.setUser_id(rowSet.getLong("user_id"));
+        account.setBalance(rowSet.getBigDecimal("balance"));
+
+        return account;
+    }
 
 
     private Transfer mapRowToTransfer(SqlRowSet rowSet) {
@@ -126,19 +203,6 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setTransfer_status(rowSet.getString("transfer_status"));
         transfer.setUsername_from(rowSet.getString("username_from"));
         transfer.setUsername_to(rowSet.getString("username_to"));
-
-        return transfer;
-    }
-
-    private Transfer mapRowToTransfer2(SqlRowSet rowSet) {
-        Transfer transfer = new Transfer();
-
-        transfer.setTransfer_id(rowSet.getLong("transfer_id"));
-        transfer.setTransfer_type_id(rowSet.getInt("transfer_type_id"));
-        transfer.setTransfer_status_id(rowSet.getInt("transfer_status_id"));
-        transfer.setAccount_from(rowSet.getLong("account_from"));
-        transfer.setAccount_to(rowSet.getLong("account_to"));
-        transfer.setAmount(rowSet.getBigDecimal("amount"));
 
         return transfer;
     }

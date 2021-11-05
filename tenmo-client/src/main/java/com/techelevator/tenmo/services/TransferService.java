@@ -95,17 +95,8 @@ public class TransferService {
 
         newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", entity, Transfer.class);
 
-//            try {
-//                returnedReservation = restTemplate.patchForObject(API_BASE_URL + "reservations",
-//                        makeReservationEntity(newReservation), Transfer.class);
-//            } catch (RestClientResponseException | ResourceAccessException e) {
-//                BasicLogger.log(e.getMessage());
-//            }
         return newTransfer;
         }
-
-
-
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
