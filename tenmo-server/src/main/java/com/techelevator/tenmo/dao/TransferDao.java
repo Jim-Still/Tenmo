@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransferDao {
 
-Transfer createTransfer(long userTo_id, long userFrom_id, BigDecimal amount);
+void createTransfer(long userTo_id, long userFrom_id, BigDecimal amount);
 
 Transfer getSingleTransfer(long transfer_id);
 

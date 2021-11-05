@@ -100,23 +100,13 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public Transfer createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
-
-        Transfer transfer = new Transfer();
+    public void createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
 
         String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount)\n" +
-                "VALUES (2, 2,\n" +
-                "        (SELECT account_id from accounts\n" +
-                "        WHERE user_id = ?),\n" +
-                "        (SELECT account_id from accounts\n" +
-                "        WHERE user_id = ?),\n" +
-                "        ?) RETURNING transfer_id";
+                "VALUES (2, 2, (SELECT account_id from accounts WHERE user_id = ?) , (SELECT account_id from accounts WHERE user_id = ?), ?)";
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, from_user_id, to_user_id, amount);
-        if (results.next()) {
-            transfer = mapRowToTransfer(results);
-        }
-        return transfer;
+        jdbcTemplate.update(sql, from_user_id, to_user_id, amount);
+
     }
 
 
@@ -139,6 +129,20 @@ public class JdbcTransferDao implements TransferDao {
 
         return transfer;
     }
+
+    private Transfer mapRowToTransfer2(SqlRowSet rowSet) {
+        Transfer transfer = new Transfer();
+
+        transfer.setTransfer_id(rowSet.getLong("transfer_id"));
+        transfer.setTransfer_type_id(rowSet.getInt("transfer_type_id"));
+        transfer.setTransfer_status_id(rowSet.getInt("transfer_status_id"));
+        transfer.setAccount_from(rowSet.getLong("account_from"));
+        transfer.setAccount_to(rowSet.getLong("account_to"));
+        transfer.setAmount(rowSet.getBigDecimal("amount"));
+
+        return transfer;
+    }
+
 
 
 }

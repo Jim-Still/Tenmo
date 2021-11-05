@@ -20,6 +20,15 @@ public class Transfer {
 
     public Transfer() {}
 
+    public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount) {
+        this.transfer_id = transfer_id;
+        this.transfer_type_id = transfer_type_id;
+        this.transfer_status_id = transfer_status_id;
+        this.account_from = account_from;
+        this.account_to = account_to;
+        this.amount = amount;
+    }
+
     public Transfer(long transfer_id, int transfer_type_id, int transfer_status_id, long account_from, long account_to, BigDecimal amount, long user_id_From, long user_id_To, String transfer_type, String transfer_status, String username_from, String username_to) {
         this.transfer_id = transfer_id;
         this.transfer_type_id = transfer_type_id;

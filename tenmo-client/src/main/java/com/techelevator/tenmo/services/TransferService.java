@@ -3,10 +3,7 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
@@ -82,6 +79,31 @@ public class TransferService {
             return allTransfers;
 
         }
+
+        public Transfer createTransfer(long user_id_from, long user_id_to, BigDecimal amount) {
+
+        Transfer newTransfer = new Transfer();
+
+            newTransfer.setUser_id_From(user_id_from);
+            newTransfer.setUser_id_To(user_id_to);
+            newTransfer.setAmount(amount);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, headers);
+
+        newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", entity, Transfer.class);
+
+//            try {
+//                returnedReservation = restTemplate.patchForObject(API_BASE_URL + "reservations",
+//                        makeReservationEntity(newReservation), Transfer.class);
+//            } catch (RestClientResponseException | ResourceAccessException e) {
+//                BasicLogger.log(e.getMessage());
+//            }
+        return newTransfer;
+        }
+
 
 
 

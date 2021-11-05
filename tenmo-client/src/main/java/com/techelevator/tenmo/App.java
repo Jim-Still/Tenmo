@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -119,7 +120,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		//-> user selects user to transfer to from list of users
 		//-> user enters amount to be sent in transfer
 
-
+		TransferService transferService = new TransferService(API_BASE_URL, currentUser);
 		AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
 		try {
@@ -132,8 +133,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
 			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
 
-			Account currentAccount = accountService.getAccount(enteredUserID);
-			accountService.addToAccountBalance(currentAccount,enteredAmount);
+			Transfer newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);
 
 
 		}catch(NullPointerException e){

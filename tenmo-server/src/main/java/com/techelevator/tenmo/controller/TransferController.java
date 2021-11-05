@@ -25,9 +25,9 @@ public class TransferController {
 
     @PreAuthorize("permitAll")
     @RequestMapping(path = "transfers", method = RequestMethod.POST)//make a user not found exception
-    public Transfer createTransfer(@RequestBody Transfer transfer) {
+    public void createTransfer(@RequestBody Transfer transfer) {
 
-        return transferDao.createTransfer(transfer.getUser_id_From(),transfer.getUser_id_To(),transfer.getAmount());
+        transferDao.createTransfer(transfer.getUser_id_From(),transfer.getUser_id_To(),transfer.getAmount());
 
 
     }
