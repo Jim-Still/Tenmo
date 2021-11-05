@@ -22,6 +22,8 @@ void subtractFromBalance(long user_id,BigDecimal amount);
 
 BigDecimal getAccountBalance(long user_id);
 
+void deleteTransfer(Long transferID);
+
 
 //void requestMoney(int userTo_id, int userFrom_id, BigDecimal amount);
 

@@ -20,7 +20,7 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(path = "transfer/users", method = RequestMethod.GET) //this method was not working for some reason
     public List<User> findAll(){
 

@@ -128,29 +128,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		} catch (NullPointerException e) {
 			System.out.println("Account empty.");
 		}
-
+			Transfer newTransfer = null;
 		try{
 			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
 			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
 
-			Transfer newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);
+			newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);
+
 
 
 		}catch(NullPointerException e){
 			System.out.println("No account.");
 
 		}
-
-		//Prompt for user ID to send TEbucks to
-
-
-
-
-
-
-
-
-
 		
 	}
 

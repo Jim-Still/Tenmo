@@ -27,7 +27,7 @@ public class AccountController {
     }
 
 //get an account object
-@PreAuthorize("permitAll")
+@PreAuthorize("hasRole('USER')")
 @RequestMapping(path = "account/{id}", method = RequestMethod.GET)
 public Account getAccount(@PathVariable long userid) {
 
@@ -40,7 +40,7 @@ public Account getAccount(@PathVariable long userid) {
 // Return current balance
 
 
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(path = "balance/{id}", method = RequestMethod.GET)
     public BigDecimal getAccountBalance(@PathVariable long id) {
 

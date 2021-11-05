@@ -134,7 +134,7 @@ public class JdbcTransferDao implements TransferDao {
             addToBalance(userTo, amount);
             subtractFromBalance(userFrom, amount);
         } else{
-            System.out.println("Transfer failed: not enough funds.");
+            deleteTransfer(transfer.getTransfer_id());
         }
 
     }
@@ -174,6 +174,12 @@ public class JdbcTransferDao implements TransferDao {
                 "WHERE user_id = ?;";
         jdbcTemplate.update(sql, amount, user_id);
 
+    }
+
+    @Override
+    public void deleteTransfer(Long transfer_id) {
+        String sql = "DELETE FROM transfers WHERE transfer_id = ?";
+        jdbcTemplate.update(sql, transfer_id);
     }
 
 
