@@ -10,6 +10,7 @@ import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.view.ConsoleService;
 
 import javax.lang.model.type.IntersectionType;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 public class App {
@@ -127,11 +128,24 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			System.out.println("Account empty.");
 		}
 
+		try{
+			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
+			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
+
+			Account currentAccount = accountService.getAccount(enteredUserID);
+			accountService.addToAccountBalance(currentAccount,enteredAmount);
+
+
+		}catch(NullPointerException e){
+			System.out.println("No account.");
+
+		}
+
 		//Prompt for user ID to send TEbucks to
 
-		Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
 
-		Integer enteredAmount = console.getUserInputInteger("Enter amount: ");
+
+
 
 
 

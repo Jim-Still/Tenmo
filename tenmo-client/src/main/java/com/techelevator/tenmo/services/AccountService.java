@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
@@ -23,6 +24,24 @@ public class AccountService {
         this.currentUser = currentUser;
     }
 
+    public Account getAccount(long accountId){
+        Account currentAccount = null;
+
+        try {
+            ResponseEntity<Account> response =
+                    restTemplate.exchange(API_BASE_URL + "account/" + accountId,
+                            HttpMethod.GET, makeAuthEntity(), Account.class);
+            currentAccount = response.getBody();
+
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            System.out.println("Error finding transfer.");
+            ;
+        }
+        return currentAccount;
+
+
+    }
+
     public BigDecimal getAccountBalance() {
         BigDecimal accountBalance = new BigDecimal(0);
         try {
@@ -33,6 +52,22 @@ public class AccountService {
         }
         return accountBalance;
     }
+
+
+    //add to account balance (does not work)
+
+//    public boolean addToAccountBalance(Account account, BigDecimal amount){
+//        boolean success = false;
+//
+//        try {
+//            account.setBalance(account.getBalance().add(amount));
+//            restTemplate.put(API_BASE_URL + "balance/" + account.getUser_id(), makeAccountEntity(account));
+//            success = true;
+//        } catch (RestClientResponseException | ResourceAccessException e) {
+//        }
+//        return success;
+//
+//    }
 
     public User[] findAllUsers(){
         // Method adds extra user in App
@@ -50,7 +85,12 @@ public class AccountService {
 
     }
 
-
+    private HttpEntity<Account> makeAccountEntity(Account account) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(currentUser.getToken());
+        return new HttpEntity<>(account, headers);
+    }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
