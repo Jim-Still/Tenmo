@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface TransferDao {
 
-void createTransfer(long userTo_id, long userFrom_id, BigDecimal amount);
+Transfer createTransfer(long userTo_id, long userFrom_id, BigDecimal amount);
 
 Transfer getSingleTransfer(long transfer_id);
 
 List <Transfer> getAllTransfers(long user_id);
 
-void runTransaction(Transfer transfer);
+boolean runTransaction(Transfer transfer);
 
 void addToBalance(long user_id,BigDecimal amount);
 

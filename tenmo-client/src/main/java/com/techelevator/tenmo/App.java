@@ -128,17 +128,27 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		} catch (NullPointerException e) {
 			System.out.println("Account empty.");
 		}
-			Transfer newTransfer = null;
+			Transfer newTransfer = new Transfer();
+			Transfer newTransferCheck = new Transfer();
+
 		try{
 			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
 			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
 
 			newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);
 
+			newTransferCheck = transferService.getSingleTransfer(newTransfer.getTransfer_id());
 
+			if (!newTransferCheck.equals(null)){
+				System.out.println("Transfer successfully processed");
+			}
 
-		}catch(NullPointerException e){
-			System.out.println("No account.");
+			if (newTransferCheck.equals(null)){
+				System.out.println("Transfer failed.");
+			}
+
+		}catch(Exception e){
+			System.out.println("Transfer failed in catch statement.");
 
 		}
 		

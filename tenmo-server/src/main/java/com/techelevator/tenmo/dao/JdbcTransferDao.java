@@ -101,7 +101,9 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public void createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
+    public Transfer createTransfer( long from_user_id,long to_user_id, BigDecimal amount){
+
+
 
         String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount)\n" +
                 "VALUES (2, 2, (SELECT account_id from accounts WHERE user_id = ?) , (SELECT account_id from accounts WHERE user_id = ?), ?) RETURNING transfer_id ";
@@ -118,10 +120,15 @@ public class JdbcTransferDao implements TransferDao {
 
         runTransaction(getSingleTransfer(newTransferId));
 
+        return getSingleTransfer(newTransferId);
+
     }
 
     @Override
-    public void runTransaction(Transfer transfer){
+    public boolean runTransaction(Transfer transfer){
+
+        boolean transactionSuccessful = false;
+
         long userFrom = transfer.getUser_id_From();
         long userTo = transfer.getUser_id_To();
         BigDecimal amount = transfer.getAmount();
@@ -133,9 +140,13 @@ public class JdbcTransferDao implements TransferDao {
         if(balance.compareTo(amount) >=0){
             addToBalance(userTo, amount);
             subtractFromBalance(userFrom, amount);
+            transactionSuccessful = true;
         } else{
             deleteTransfer(transfer.getTransfer_id());
+
         }
+
+        return transactionSuccessful;
 
     }
 

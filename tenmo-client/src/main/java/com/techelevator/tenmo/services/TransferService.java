@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 
 public class TransferService {
 
@@ -45,7 +46,7 @@ public class TransferService {
             System.out.println("");
         } catch (RestClientResponseException | ResourceAccessException e) {
             System.out.println("Error finding transfer.");
-            ;
+
         }
         return currentTransfer;
     }
@@ -93,8 +94,15 @@ public class TransferService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, headers);
+            try {
 
-        newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", entity, Transfer.class);
+                newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", entity, Transfer.class);
+
+            } catch (RestClientResponseException | ResourceAccessException e) {
+                System.out.println("User id invalid; Transfer failed");
+            } catch (NullPointerException f){
+                System.out.println("Caught null pointer exception in create transfer in transfer service");
+            }
 
         return newTransfer;
         }
