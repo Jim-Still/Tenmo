@@ -90,22 +90,26 @@ public class TransferService {
             newTransfer.setUser_id_To(user_id_to);
             newTransfer.setAmount(amount);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Transfer> entity = new HttpEntity<>(newTransfer, headers);
             try {
 
-                newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", entity, Transfer.class);
+                newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", makeTransferEntity(newTransfer), Transfer.class);
 
             } catch (RestClientResponseException | ResourceAccessException e) {
                 System.out.println("User id invalid; Transfer failed");
+                System.out.println(e);
             } catch (NullPointerException f){
                 System.out.println("Caught null pointer exception in create transfer in transfer service");
             }
 
         return newTransfer;
         }
+
+    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(currentUser.getToken());
+        return new HttpEntity<>(transfer, headers);
+    }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();

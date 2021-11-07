@@ -59,9 +59,16 @@ public class AccountService {
 
         try {
             users = restTemplate.exchange(API_BASE_URL + "transfer/users", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
-            for (User i : users) {
-                System.out.println(i.toString());
+
+            for (int i = 0; i < users.length; i++) {
+                System.out.println(users[i]);
             }
+
+
+//            for (User i : users) {
+////                System.out.println(i.toString());
+//                System.out.println(i);
+//            }
         } catch (RestClientResponseException e) {
             System.out.println("Error getting users");
         }

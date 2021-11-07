@@ -103,6 +103,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		Integer enteredTransferID = console.getUserInputInteger("Please enter transfer ID to view details (0 to cancel): ");
 
 		try {
+			if (enteredTransferID == 0) {
+				mainMenu();
+			}
 			transferService.getSingleTransfer(enteredTransferID);
 		} catch (NumberFormatException e) {
 			System.out.println("Transfer ID Not Recognized");
@@ -124,7 +127,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
 		try {
-			System.out.println(accountService.findAllUsers());
+			accountService.findAllUsers();
 		} catch (NullPointerException e) {
 			System.out.println("Account empty.");
 		}
@@ -133,6 +136,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 		try{
 			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
+			if (enteredUserID == 0) {
+				mainMenu();
+			}
 			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
 
 			newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);

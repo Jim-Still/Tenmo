@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@PreAuthorize("IsAuthenticated()")
+@PreAuthorize("isAuthenticated()")
 
 public class UserController {
 
@@ -20,7 +20,7 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    @PreAuthorize("hasRole('USER')")
+
     @RequestMapping(path = "transfer/users", method = RequestMethod.GET) //this method was not working for some reason
     public List<User> findAll(){
 

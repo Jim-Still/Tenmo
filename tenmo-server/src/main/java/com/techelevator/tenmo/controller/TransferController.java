@@ -23,7 +23,7 @@ public class TransferController {
 
     // Create new transfer
 
-    @PreAuthorize("permitAll")
+
     @RequestMapping(path = "transfers", method = RequestMethod.POST)//make a user not found exception
     public Transfer createTransfer(@RequestBody Transfer transfer) {
 
@@ -35,7 +35,7 @@ public class TransferController {
 
     //Get Single Transfer
 
-    @PreAuthorize("permitAll")
+
     @RequestMapping(path = "transfers/{transferID}", method = RequestMethod.GET)//make a transfer not found exception
     public Transfer getSingleTransfer(@PathVariable long transferID){
 
@@ -45,7 +45,7 @@ public class TransferController {
 
     //Get All Transfers By User ID
 
-    @PreAuthorize("permitAll")
+
     @RequestMapping(path = "transfers/{userID}/all", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers(@PathVariable long userID) {
 
