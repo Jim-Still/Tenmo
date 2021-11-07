@@ -39,14 +39,12 @@ public class AccountService {
         }
         return currentAccount;
 
-
     }
 
     public BigDecimal getAccountBalance() {
         BigDecimal accountBalance = new BigDecimal(0);
         try {
             accountBalance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
-            System.out.println("Your current account balance is: $" + accountBalance);
         } catch (RestClientException e) {
             System.out.println("Error getting balance");
         }
@@ -64,11 +62,6 @@ public class AccountService {
                 System.out.println(users[i]);
             }
 
-
-//            for (User i : users) {
-////                System.out.println(i.toString());
-//                System.out.println(i);
-//            }
         } catch (RestClientResponseException e) {
             System.out.println("Error getting users");
         }

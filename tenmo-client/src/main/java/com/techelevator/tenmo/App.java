@@ -78,12 +78,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewCurrentBalance() {
 
-    	//long choice = console.getUserInputInteger("What is your account number?");
-
     	AccountService accountService = new AccountService(API_BASE_URL, currentUser);
 
 		try {
-			accountService.getAccountBalance();
+			System.out.println("Your current account balance is: $" + accountService.getAccountBalance());
 		} catch (NullPointerException e) {
 			System.out.println("Account empty.");
 		}
@@ -107,10 +105,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 				mainMenu();
 			}
 			transferService.getSingleTransfer(enteredTransferID);
-		} catch (NumberFormatException e) {
-			System.out.println("Transfer ID Not Recognized");
+		} catch (NullPointerException e) {
+			System.out.println("Transfer ID Invalid.");
 		}
-		
+		catch (NumberFormatException e) {
+			System.out.println("Transfer ID Invalid");
+		}
+
 	}
 
 	private void viewPendingRequests() {
@@ -134,27 +135,35 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			Transfer newTransfer = new Transfer();
 			Transfer newTransferCheck = new Transfer();
 
-		try{
-			Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
-			if (enteredUserID == 0) {
-				mainMenu();
-			}
-			BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
+		Integer enteredUserID = console.getUserInputInteger("Enter ID of user you are sending to (0 to cancel): ");
+		if (enteredUserID == 0) {
+			mainMenu();
+		}
+		BigDecimal enteredAmount = console.getUserInputBigD("Enter amount: ");
+
+		try {
 
 			newTransfer = transferService.createTransfer(currentUser.getUser().getId(), enteredUserID, enteredAmount);
 
 			newTransferCheck = transferService.getSingleTransfer(newTransfer.getTransfer_id());
 
-			if (!newTransferCheck.equals(null)){
+			if (!newTransferCheck.equals(null)) {
 				System.out.println("Transfer successfully processed");
 			}
 
-			if (newTransferCheck.equals(null)){
+			if (newTransferCheck.equals(null)) {
 				System.out.println("Transfer failed.");
 			}
 
+		}catch(NullPointerException f){
+
+			if(enteredAmount.compareTo(accountService.getAccountBalance()) == 1) {
+				System.out.println("Not enough balance.");
+			}
+
 		}catch(Exception e){
-			System.out.println("Transfer failed in catch statement.");
+
+			System.out.println();
 
 		}
 		

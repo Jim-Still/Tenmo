@@ -33,9 +33,11 @@ public class TransferService {
                             HttpMethod.GET, makeAuthEntity(), Transfer.class);
             currentTransfer = response.getBody();
             System.out.println("");
-            System.out.println("--------------------------------------------");
-            System.out.println("Transfer Details");
-            System.out.println("--------------------------------------------");
+            if(!currentTransfer.equals(null)) {
+                System.out.println("--------------------------------------------");
+                System.out.println("Transfer Details");
+                System.out.println("--------------------------------------------");
+            }
 
             System.out.println("Id: " + currentTransfer.getTransfer_id());
             System.out.println("From: " + currentTransfer.getUsername_from());
@@ -46,7 +48,6 @@ public class TransferService {
             System.out.println("");
         } catch (RestClientResponseException | ResourceAccessException e) {
             System.out.println("Error finding transfer.");
-
         }
         return currentTransfer;
     }
@@ -94,9 +95,20 @@ public class TransferService {
 
                 newTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", makeTransferEntity(newTransfer), Transfer.class);
 
-            } catch (RestClientResponseException | ResourceAccessException e) {
-                System.out.println("User id invalid; Transfer failed");
+            } catch (RestClientResponseException e) {
+
+                BigDecimal zero = new BigDecimal(0);
+
+                if(newTransfer.getAmount().compareTo(zero) == 1) {
+
+                    System.out.println("Transfer failed");
+                }else{
+                    System.out.println("Entered amount must be a positive amount.");
+                }
+
+            } catch (ResourceAccessException e) {
                 System.out.println(e);
+
             } catch (NullPointerException f){
                 System.out.println("Caught null pointer exception in create transfer in transfer service");
             }
