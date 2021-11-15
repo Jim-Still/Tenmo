@@ -1,3 +1,5 @@
+/*Odds & Ends of SQL Queries*/
+
 SELECT transfers.*, a.user_id AS from_user_id, b.user_id AS to_user_id,
 transfer_statuses.transfer_status_desc AS transfer_status, 
 transfer_types.transfer_type_desc AS transfer_type, c.username AS username_from, d.username AS username_to
