@@ -6,7 +6,9 @@ This was a pair project focused on building a Venmo clone with a randomly assign
 ## Technology Used
 
 Java (IntelliJ)
+
 SQL/PostegreSQL (dbVIsualizer)
+
 SpringBoot
 
 
