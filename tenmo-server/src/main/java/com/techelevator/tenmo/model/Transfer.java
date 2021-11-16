@@ -129,7 +129,6 @@ public class Transfer {
     public void setUsername_to(String username_to) {
         this.username_to = username_to;
     }
-
     @Override
     public String toString() {
         return "Transfer{" +
