@@ -11,5 +11,4 @@ Account getAccount(long user_id);
 void addToAccountBalance(BigDecimal amount, long user_id);
 
 void subtractFromAccountBalance(BigDecimal amount,long user_id);
-
 }
