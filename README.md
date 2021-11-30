@@ -14,7 +14,7 @@ SpringBoot
 
 ## Lessons Learned
 
-We tackled this one in vertical slices, which I think was helpful for visualizing the flow of data whole tackling a project like this for the first time. We started with the getBalance() method, and worked our way from the database to the command line app all the way through on that one method. Once we completed that, it was easier to see how all the individual layers worked together to put the contents of the database on the user's screen.
+We tackled this one in vertical slices, which I think was helpful for visualizing the flow of data while tackling a project like this for the first time. We started with the getBalance() method, and worked our way from the database to the command line app all the way through on that one method. Once we completed that, it was easier to see how all the individual layers worked together to put the contents of the database on the user's screen.
 
 
 ### A user can:
